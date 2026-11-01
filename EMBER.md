@@ -13,6 +13,16 @@ Settings live in `packages/infra/.env` (not committed; it holds the secret).
   is set (Cloudflare Email Sending only reaches any inbox on Workers Paid,
   $5/month). Without the key there is no Email binding and nothing is sent.
 
+- Ember's look: `packages/ui/src/styles/globals.css` holds Ember's light and dark
+  palettes (from ember.mov's "ember" theme), ember for links, focus, votes and the
+  main button (`apps/web/src/index.css`), the system font instead of Geist, warm
+  primary buttons, Ember swatches in Settings > Statuses. Status chips draw text
+  in the status colour on both themes, so each colour is picked to read on both.
+
+Board content (statuses, tags, tagline) lives in the database, not the code:
+statuses New / Considering / Planned / In progress / Shipped / Closed; tags for
+Ember's surfaces (Journal, People, Worlds, ...) and platforms (iPhone, iPad, Mac).
+
 AGPL: a modified copy that runs as a service must publish its source. The
 footer's Source link (`SOURCE_URL`) points at the public fork,
 github.com/nandhak0318/ember-feedback/tree/ember, which holds these

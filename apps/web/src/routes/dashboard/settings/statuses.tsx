@@ -19,7 +19,8 @@ export const Route = createFileRoute("/dashboard/settings/statuses")({
   component: Statuses,
 });
 
-const SWATCHES = ["#f2b53d", "#b08cff", "#6e8bff", "#3ecf8e", "#e0705f", "#5fc8e0", "#ff8fab", "#7a7a85"];
+// Ember: each reads on both the warm paper and the warm near-black.
+const SWATCHES = ["#a97e1a", "#5f87b5", "#d9692e", "#4a9558", "#c2553f", "#3f8f8a", "#9a6f9f", "#857b6c"];
 
 function Statuses() {
   const root = useLoaderData({ from: "__root__" });
@@ -70,7 +71,7 @@ function Statuses() {
       ))}
       {adding ? (
         <StatusRow
-          status={{ key: "", label: "", color: "#6e8bff", kind: "planned", position: 99, onRoadmap: true }}
+          status={{ key: "", label: "", color: "#5f87b5", kind: "planned", position: 99, onRoadmap: true }}
           count={0}
           editing
           onSave={(patch) => { fire(() => saveStatus({ data: patch }), "Status added"); setAdding(false); }}
@@ -126,7 +127,7 @@ function StatusRow({
           <span className="flex gap-1.5">
             {SWATCHES.map((c) => (
               <button key={c} type="button" onClick={() => setColor(c)} aria-label={c} className={cn("inline-flex size-[22px] items-center justify-center rounded-full", color === c && "ring-2 ring-foreground ring-offset-2 ring-offset-background")} style={{ background: c }}>
-                {color === c ? <CheckIcon weight="bold" className="size-2.5 text-[#0d0d0f]" /> : null}
+                {color === c ? <CheckIcon weight="bold" className="size-2.5 text-[#1c1a17]" /> : null}
               </button>
             ))}
           </span>

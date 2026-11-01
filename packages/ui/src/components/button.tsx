@@ -15,7 +15,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          "bg-white text-[#0d0d0f] shadow-[inset_0_-1px_0_rgba(0,0,0,.14),0_1px_2px_rgba(0,0,0,.4)] hover:bg-[#f4f4f6] active:bg-[#e8e8ec] dark:bg-white",
+          "bg-white text-[#1c1a17] shadow-[inset_0_-1px_0_rgba(0,0,0,.14),0_1px_2px_rgba(0,0,0,.4)] hover:bg-[#f6f1ea] active:bg-[#ece5da] dark:bg-[#ede7dc] dark:hover:bg-[#e4ddd0] dark:active:bg-[#d9d1c3]",
         secondary:
           "border border-input bg-accent text-muted-foreground shadow-[inset_0_1px_0_rgba(255,255,255,.08)] hover:bg-[color-mix(in_oklch,var(--accent),white_4%)] hover:text-foreground active:bg-[color-mix(in_oklch,var(--accent),black_8%)] aria-expanded:text-foreground",
         outline: "border border-border bg-transparent text-muted-foreground hover:border-input hover:bg-accent/60 hover:text-foreground aria-expanded:bg-accent aria-expanded:text-foreground",
