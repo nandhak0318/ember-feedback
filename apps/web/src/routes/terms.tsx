@@ -70,7 +70,7 @@ function TermsPage() {
         <section>
           <h2>Contact</h2>
           <p>
-            Questions about these terms? Email <a href="mailto:sangainandhu18@gmail.com" className="text-foreground underline underline-offset-2">sangainandhu18@gmail.com</a>.
+            Questions about these terms? Email <a href="mailto:nandha@ember.mov" className="text-foreground underline underline-offset-2">nandha@ember.mov</a>.
           </p>
         </section>
       </div>

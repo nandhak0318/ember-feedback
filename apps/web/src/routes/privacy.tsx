@@ -26,7 +26,7 @@ function PrivacyPage() {
         <section>
           <h2>Who we are</h2>
           <p>
-            This is the feedback board for Ember, the journal app for macOS, iOS and iPadOS. It is run by Ember's developer, a single person. You can reach us at <a href="mailto:sangainandhu18@gmail.com" className="text-foreground underline underline-offset-2">sangainandhu18@gmail.com</a>.
+            This is the feedback board for Ember, the journal app for macOS, iOS and iPadOS. It is run by Ember's developer, a single person. You can reach us at <a href="mailto:nandha@ember.mov" className="text-foreground underline underline-offset-2">nandha@ember.mov</a>.
           </p>
         </section>
 
@@ -81,7 +81,7 @@ function PrivacyPage() {
         <section>
           <h2>Keeping and deleting</h2>
           <p>
-            We keep your account and posts while the board exists. To delete your account, email <a href="mailto:sangainandhu18@gmail.com" className="text-foreground underline underline-offset-2">sangainandhu18@gmail.com</a> from the address you sign in with. We delete your email address and display name within 30 days. Tell us if you want your posts removed too. You can also ask for a copy of your data, or for a correction, the same way.
+            We keep your account and posts while the board exists. To delete your account, email <a href="mailto:nandha@ember.mov" className="text-foreground underline underline-offset-2">nandha@ember.mov</a> from the address you sign in with. We delete your email address and display name within 30 days. Tell us if you want your posts removed too. You can also ask for a copy of your data, or for a correction, the same way.
           </p>
         </section>
 
