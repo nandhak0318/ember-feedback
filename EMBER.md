@@ -45,7 +45,10 @@ Settings live in `packages/infra/.env` (not committed; it holds the secret).
   feedback_changelog_subscribed, feedback_picture_set/removed, feedback_name_set.
 
 Board content (statuses, tags, tagline) lives in the database, not the code:
-statuses New / Considering / Planned / In progress / Shipped / Closed; tags for
+statuses New / Considering / Planned / In progress / Waiting on App Store /
+Shipped / Closed (Waiting on App Store, key `appstore`, kind progress: fixed or
+built, in a build Apple is still reviewing; move it to Shipped once the version
+is live); tags for
 Ember's surfaces (Journal, People, Worlds, ...) and platforms (iPhone, iPad, Mac).
 
 AGPL: a modified copy that runs as a service must publish its source. The
