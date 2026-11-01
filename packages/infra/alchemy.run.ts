@@ -26,6 +26,8 @@ export const uploadIpLimit = Cloudflare.RateLimit("UPLOAD_IP_LIMIT", { namespace
 
 export const web = Cloudflare.Website.Vite("web", {
   rootDir: "../../apps/web",
+  // Ember: serve on BETTER_AUTH_URL's host (feedback.ember.mov) as a custom domain.
+  ...(process.env.BETTER_AUTH_URL ? { domain: new URL(process.env.BETTER_AUTH_URL).hostname } : {}),
   placement: { region: "aws:us-west-2" },
   compatibility: {
     flags: ["nodejs_compat"],

@@ -32,14 +32,17 @@ changes. Push the `ember` branch after every change you deploy.
    bun install
    cd packages/infra && bunx alchemy login --configure && cd ../..
    ```
-4. `bun run deploy`. It prints a `*.workers.dev` URL.
-5. Dashboard → Workers → the openheard worker → Settings → Domains & Routes →
-   add `feedback.ember.mov`. Sign-in links point there, so do this before
-   step 6.
+4. `cd packages/infra && bunx alchemy deploy --stage prod --yes`. Run alchemy
+   directly: `bun run deploy` goes through `--filter`, which never passes your
+   answer to its first prompt. The deploy also attaches `feedback.ember.mov`
+   (the host in `BETTER_AUTH_URL`) as the worker's custom domain; it fails if
+   another DNS record already holds that name (Sleekplan did, until 2026-11-01).
+5. Wait for https://feedback.ember.mov to load (a few minutes for the
+   certificate).
 6. Open https://feedback.ember.mov and sign in first: the first account
    becomes the admin.
 
-Later deploys: `bun run deploy` again. Pull upstream with
+Later deploys: step 4 again. Pull upstream with
 `git pull upstream main`.
 
 ## Try it locally
