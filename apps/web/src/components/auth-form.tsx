@@ -5,6 +5,7 @@ import { cn } from "@openheard/ui/lib/utils";
 import { Button } from "@openheard/ui/components/button";
 import { GoogleIcon } from "@/components/icons";
 import { authClient } from "@/lib/auth-client";
+import { track } from "@/lib/ember-analytics";
 
 function Field({ icon, children, invalid }: { icon: React.ReactNode; children: React.ReactNode; invalid?: boolean }) {
   return (
@@ -48,6 +49,7 @@ export function AuthForm({
       { email, callbackURL },
       {
         onSuccess: () => {
+          track("feedback_sign_in_link_requested");
           setMagicSent(true);
           setBusy(false);
         },

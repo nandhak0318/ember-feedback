@@ -11,6 +11,7 @@ import { getAnonToken, getAnonVotes, setAnonVoted } from "@/lib/anon-vote";
 import { openSignIn } from "@/lib/pending-action";
 import { useOptimisticVote } from "@/lib/use-optimistic-vote";
 import { cn } from "@openheard/ui/lib/utils";
+import { track } from "@/lib/ember-analytics";
 
 const CELL = { type: "spring", stiffness: 520, damping: 34, mass: 0.45 } as const;
 const FLIP = { type: "spring", stiffness: 260, damping: 34, mass: 0.8 } as const;
@@ -62,11 +63,13 @@ export function VoteButton({
     onCommit: async () => {
       if (signedIn) {
         await toggleVote({ data: { postId }, headers });
+        track("feedback_voted", { signed_in: true });
       } else {
         const token = getAnonToken();
         const result = await toggleAnonVote({ data: { postId, anonToken: token } });
         setAnonVoted(postId, result.voted);
         setAnonVotedState(result.voted);
+        track("feedback_voted", { signed_in: false, on: result.voted });
       }
       router.invalidate();
     },

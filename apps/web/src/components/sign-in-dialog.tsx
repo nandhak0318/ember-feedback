@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { AuthForm } from "@/components/auth-form";
 import { closeSignIn, consumePendingAction, useSignInDialog } from "@/lib/pending-action";
 import { toggleVote, addComment } from "@/functions/posts";
+import { track } from "@/lib/ember-analytics";
 
 export function SignInDialog() {
   const root = useLoaderData({ from: "__root__" });
@@ -46,9 +47,11 @@ async function replayPendingAction(router: ReturnType<typeof useRouter>) {
   try {
     if (action.type === "vote") {
       await toggleVote({ data: { postId: action.postId } });
+      track("feedback_voted", { signed_in: true, after_sign_in: true });
       router.invalidate();
     } else if (action.type === "comment" && action.body) {
       await addComment({ data: { postId: action.postId, body: action.body } });
+      track("feedback_commented", { images: false, after_sign_in: true });
       router.invalidate();
     } else if (action.type === "compose") {
       window.dispatchEvent(new CustomEvent("openheard:open-composer"));

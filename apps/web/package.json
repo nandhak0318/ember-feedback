@@ -35,6 +35,7 @@
     "libsql": "catalog:",
     "motion": "^13.2.0",
     "next-themes": "catalog:",
+    "posthog-js": "1.444.0",
     "react": "catalog:",
     "react-dom": "catalog:",
     "sonner": "catalog:",

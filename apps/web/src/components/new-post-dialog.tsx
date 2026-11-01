@@ -5,6 +5,7 @@ import { CaretDownIcon, FileTextIcon, ImageIcon, LightningIcon, PlusIcon, XIcon 
 import { Link, useLoaderData, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { track } from "@/lib/ember-analytics";
 
 import { searchHelp } from "@/functions/help";
 import { createPost, searchPosts } from "@/functions/posts";
@@ -140,6 +141,7 @@ export function NewPostDialog({
     createPost({ data: { boardId: postBoardId, title: postTitle, body: postBody, tags: [], attachments } })
       .then((result) => {
         onOptimisticPost?.(null);
+        track("feedback_post_created", { board: postBoardId, pending: !!result.pending });
         router.invalidate();
         toast.success(result.pending ? "Submitted! An admin will review it shortly." : "Posted. You are the first vote.");
         navigate({ to: "/p/$id", params: { id: String(result.id) } });

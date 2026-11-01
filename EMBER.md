@@ -36,6 +36,14 @@ Settings live in `packages/infra/.env` (not committed; it holds the secret).
   update in `packages/auth` refuses any picture that is not the person's own
   `/avatar/...` path. Without a picture, a coloured letter (`components/bits.tsx`).
 
+- PostHog (`apps/web/src/lib/ember-analytics.ts`): the "Ember Landing Page"
+  project, like ember.mov, every event tagged `site: feedback`. Anonymous (no
+  identify), no session recordings, no click autocapture, `?q=` search words
+  scrubbed from every URL in an event. Not for admins, /dashboard or the widget;
+  `?internal=1` turns it off in a browser. Events: feedback_post_created,
+  feedback_voted, feedback_commented, feedback_sign_in_link_requested,
+  feedback_changelog_subscribed, feedback_picture_set/removed, feedback_name_set.
+
 Board content (statuses, tags, tagline) lives in the database, not the code:
 statuses New / Considering / Planned / In progress / Shipped / Closed; tags for
 Ember's surfaces (Journal, People, Worlds, ...) and platforms (iPhone, iPad, Mac).

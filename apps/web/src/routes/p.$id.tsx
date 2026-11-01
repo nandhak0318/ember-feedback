@@ -18,6 +18,7 @@ import { isDemo } from "@/lib/demo";
 import { findStatus, roadmapStatuses, useStatuses } from "@/lib/status";
 import { ago, fullDate, since } from "@/lib/time";
 import { cn } from "@openheard/ui/lib/utils";
+import { track } from "@/lib/ember-analytics";
 
 export const Route = createFileRoute("/p/$id")({
   loader: async ({ params }) => {
@@ -116,7 +117,10 @@ function PostPage() {
     images.reset();
 
     addComment({ data: { postId: p.id, body, attachments } })
-      .then(() => router.invalidate())
+      .then(() => {
+        track("feedback_commented", { images: attachments.length > 0 });
+        return router.invalidate();
+      })
       .catch((err) => {
         setPendingComments((prev) => prev.filter((c) => c.id !== tempId));
         // Give the reply back so nothing typed or attached is lost, unless

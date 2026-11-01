@@ -8,6 +8,7 @@ import Logo from "../components/logo";
 import { SignInDialog } from "../components/sign-in-dialog";
 
 import { getWorkspace } from "../functions/workspace";
+import { startAnalytics, stopAnalytics } from "../lib/ember-analytics";
 import { officialWidgetSrc } from "../lib/official-widget";
 import type { MissingWorkspace } from "../lib/session";
 import { brandForeground, themeScript, useVisitorTheme } from "../lib/visitor-theme";
@@ -132,6 +133,12 @@ function RootDocument() {
     script.async = true;
     document.body.appendChild(script);
   }, [feedbackWidget]);
+  // Ember: PostHog for visitors only; an admin signing in stops it for the visit.
+  const isAdmin = data?.user?.role === "admin";
+  useEffect(() => {
+    if (isAdmin) stopAnalytics();
+    else startAnalytics({ admin: false, pathname });
+  }, [isAdmin, pathname]);
   const bare = BARE_PAGES.some((p) => pathname === p || pathname.startsWith(p));
   // The embedded widget takes its theme from the loader, which settles "auto"
   // against the visitor's system; dark when it does not say.

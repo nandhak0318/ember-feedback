@@ -43,15 +43,22 @@ function PrivacyPage() {
             <li><strong>Your email address</strong>, to send you sign-in links. It is never shown on the board.</li>
             <li><strong>Your display name</strong>, if you set one. It is shown next to what you post.</li>
             <li><strong>What you post</strong>: ideas, comments, votes, reactions and images you attach. Posts, comments and display names are public on the board.</li>
-            <li><strong>Cookies and browser storage</strong>: a session cookie keeps you signed in. If you vote without signing in, your browser keeps a random ID so the board remembers your vote. No advertising or tracking cookies.</li>
+            <li><strong>Cookies and browser storage</strong>: a session cookie keeps you signed in. If you vote without signing in, your browser keeps a random ID so the board remembers your vote. PostHog keeps another random ID for the anonymous usage counts. No advertising cookies.</li>
             <li><strong>Network data</strong>: your IP address passes through Cloudflare, which hosts the board, to deliver pages and stop abuse. When you sign in, your IP address and browser name are kept with your sign-in session to keep your account safe, and deleted when the session ends.</li>
           </ul>
         </section>
 
         <section>
+          <h2>Anonymous usage counts</h2>
+          <p>
+            We use PostHog to count how the board is used: pages visited and actions such as posting, voting, commenting or asking for a sign-in link. It is tied to a random ID in your browser, not to your account, and never includes your name, email, what you write or what you search for. There are no session recordings.
+          </p>
+        </section>
+
+        <section>
           <h2>What we do not do</h2>
           <p>
-            No analytics or tracking scripts run on this board. We do not sell your data, show ads, or use your email for anything except sign-in links and the updates described below.
+            We do not sell your data, show ads, track you across other sites, or use your email for anything except sign-in links and the updates described below.
           </p>
         </section>
 
@@ -67,6 +74,7 @@ function PrivacyPage() {
           <ul>
             <li><strong>Cloudflare</strong> hosts the board, its database and attached images.</li>
             <li><strong>Resend</strong> delivers the emails. It receives your email address and the text of each email.</li>
+            <li><strong>PostHog</strong> counts how the board is used, as described above. It receives no email addresses or account details.</li>
           </ul>
         </section>
 

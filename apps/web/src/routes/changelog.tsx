@@ -14,6 +14,7 @@ import { deleteChangelog, listChangelog, saveChangelog } from "@/functions/chang
 import { subscribeChangelog } from "@/functions/notifications";
 import { searchPosts } from "@/functions/posts";
 import { cn } from "@openheard/ui/lib/utils";
+import { track } from "@/lib/ember-analytics";
 
 export const Route = createFileRoute("/changelog")({
   loader: () => listChangelog(),
@@ -158,6 +159,7 @@ function SubscribeBox() {
           setError(null);
           try {
             await subscribeChangelog({ data: { email } });
+            track("feedback_changelog_subscribed");
             setSent(true);
           } catch (err) {
             const msg = err instanceof Error ? err.message : "";

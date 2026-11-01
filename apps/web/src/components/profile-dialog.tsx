@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { saveMyName } from "@/functions/profile";
+import { track } from "@/lib/ember-analytics";
 
 import { AvatarCropper } from "./avatar-cropper";
 import { Avatar } from "./bits";
@@ -24,6 +25,7 @@ export function AvatarPicker({ name, image, size = 64 }: { name: string; image?:
       const res = await fetch("/api/avatar", { method, body, headers: body ? { "content-type": body.type } : undefined });
       const out = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) throw new Error(out.error ?? "Could not save the picture");
+      track(method === "POST" ? "feedback_picture_set" : "feedback_picture_removed");
       await router.invalidate();
       return true;
     } catch (err) {
@@ -83,6 +85,7 @@ export function ProfileDialog({ open, onOpenChange }: { open: boolean; onOpenCha
     setSaving(true);
     try {
       await saveMyName({ data: { name } });
+      track("feedback_name_set", { first: !me!.name.trim() });
       await router.invalidate();
       onOpenChange(false);
     } catch (err) {
