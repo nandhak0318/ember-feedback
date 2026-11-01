@@ -51,6 +51,10 @@ export default {
   async scheduled(_controller: ScheduledController, _env: unknown, ctx: ExecutionContext) {
     ctx.waitUntil(
       (async () => {
+        // Ember: a single-workspace install (no ROOT_DOMAIN) never serves the
+        // demo, so it gets no demo workspace or shared demo admin either.
+        const { rootDomain } = await import("./lib/session");
+        if (!(await rootDomain())) return;
         const [{ createDb }, { resetDemoWorkspace }] = await Promise.all([import("@openheard/db"), import("./lib/demo-db")]);
         const { posts } = await resetDemoWorkspace(createDb());
         console.log(`demo reset: ${posts} posts`);
