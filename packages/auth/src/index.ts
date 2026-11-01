@@ -1,6 +1,7 @@
 import { createDb } from "@openheard/db";
 import * as schema from "@openheard/db/schema/auth";
 import { DEFAULT_STATUSES, membership, status, workspace } from "@openheard/db/schema/feedback";
+import { mailer } from "@openheard/env/mailer";
 import { env } from "@openheard/env/server";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
@@ -21,9 +22,10 @@ function authFrom() {
 
 async function authSendEmail(to: string, subject: string, html: string, text: string) {
   try {
-    if ((env as any).EMAIL) {
+    const mail = mailer(env);
+    if (mail) {
       const replyTo = (env as unknown as { EMAIL_REPLY_TO?: string }).EMAIL_REPLY_TO;
-      const result = await (env as any).EMAIL.send({ to, from: authFrom(), subject, html, text, ...(replyTo ? { replyTo } : {}) });
+      const result = await mail.send({ to, from: authFrom(), subject, html, text, ...(replyTo ? { replyTo } : {}) });
       console.log(`[auth] email sent: ${subject} → ${to}`, result?.messageId ?? "");
     } else {
       console.log(`[auth] ${subject} → ${to}\n  ${text.replace(/\n/g, "\n  ")}`);

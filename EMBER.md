@@ -9,6 +9,9 @@ Settings live in `packages/infra/.env` (not committed; it holds the secret).
 
 - `packages/auth/src/index.ts`: password sign-in turned off.
 - `apps/web/src/components/auth-form.tsx`: the form is one email box.
+- `packages/env/src/mailer.ts`: mail goes through Resend when `RESEND_API_KEY`
+  is set (Cloudflare Email Sending only reaches any inbox on Workers Paid,
+  $5/month). Without the key there is no Email binding and nothing is sent.
 
 AGPL: a modified copy that runs as a service must publish its source. The
 footer's Source link (`SOURCE_URL`) points at the public fork,
@@ -18,8 +21,10 @@ changes. Push the `ember` branch after every change you deploy.
 ## Deploy, once
 
 1. Cloudflare dashboard: R2 → turn it on (free tier is enough).
-2. Cloudflare dashboard: Email Sending → add `ember.mov` and confirm the DNS
-   records, so `feedback@ember.mov` can send. Without it no sign-in link is
+2. resend.com (free: 3,000 emails a month, 100 a day): add the domain
+   `ember.mov`, add the DNS records it shows in Cloudflare, wait for
+   "Verified", then create an API key with "Sending access" and paste it into
+   `packages/infra/.env` as `RESEND_API_KEY`. Without it no sign-in link is
    ever delivered.
 3. Install and log in:
    ```bash

@@ -44,13 +44,14 @@ export type SendResult = { ok: boolean; code?: string };
 // Never throws: a failed send is logged and reported, the caller carries on.
 export async function sendEmail(to: string, subject: string, html: string, text: string, opts?: { headers?: Record<string, string> }): Promise<SendResult> {
   try {
-    const { env } = await import("@openheard/env/server");
-    if (!(env as any).EMAIL) {
+    const [{ env }, { mailer }] = await Promise.all([import("@openheard/env/server"), import("@openheard/env/mailer")]);
+    const mail = mailer(env);
+    if (!mail) {
       console.log(`[email] No EMAIL binding — logging instead\n  To: ${to}\n  Subject: ${subject}\n  ${text.replace(/\n/g, "\n  ")}`);
       return { ok: true };
     }
     const replyTo = (env as unknown as { EMAIL_REPLY_TO?: string }).EMAIL_REPLY_TO;
-    const result = await (env as any).EMAIL.send({ to, from: sender(env as any), subject, html, text, ...(replyTo ? { replyTo } : {}), ...(opts?.headers ? { headers: opts.headers } : {}) });
+    const result = await mail.send({ to, from: sender(env as any), subject, html, text, ...(replyTo ? { replyTo } : {}), ...(opts?.headers ? { headers: opts.headers } : {}) });
     console.log(`[email] sent: ${subject}`, result?.messageId ?? "");
     return { ok: true };
   } catch (err: any) {
