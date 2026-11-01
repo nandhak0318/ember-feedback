@@ -127,13 +127,13 @@ export function changelogEmail(input: {
 export function confirmSubscriptionEmail(input: { workspaceName: string; confirmUrl: string }): Rendered {
   const { workspaceName, confirmUrl } = input;
   return {
-    subject: `Confirm changelog emails from ${oneLine(workspaceName, 60)}`,
+    subject: `Confirm updates from ${oneLine(workspaceName, 60)}`,
     html: emailLayout(`
-      <h1 style="${TEXT} font-size: 20px; font-weight: 700; color: #111; margin: 0 0 12px;">Confirm your subscription</h1>
-      <p style="${TEXT} font-size: 15px; color: #555; line-height: 1.7; margin: 0 0 4px;">Confirm to get one email from ${escapeHtml(workspaceName)} each time something ships. This link expires in 7 days.</p>
+      <h1 style="${TEXT} font-size: 20px; font-weight: 700; color: #111; margin: 0 0 12px;">Confirm your email</h1>
+      <p style="${TEXT} font-size: 15px; color: #555; line-height: 1.7; margin: 0 0 4px;">Tap below and I'll write when something new lands in ${escapeHtml(workspaceName)}. Just that, nothing else. This link works for 7 days.</p>
       ${emailButton(confirmUrl, "Confirm")}
-      <p style="${TEXT} font-size: 13px; color: #999; line-height: 1.6; margin: 0;">If you did not ask for this, ignore this email and nothing will be sent.</p>
+      <p style="${TEXT} font-size: 13px; color: #999; line-height: 1.6; margin: 0;">Didn't ask for this? Ignore this email and you won't hear from me.</p>
     `, "", escapeHtml(workspaceName)),
-    text: `Confirm changelog emails from ${workspaceName}\n\nConfirm here: ${confirmUrl}\n\nThis link expires in 7 days. If you did not ask for this, ignore this email.`,
+    text: `Confirm updates from ${workspaceName}\n\nTap the link and I'll write when something new lands in ${workspaceName}. Just that, nothing else.\n\n${confirmUrl}\n\nThis link works for 7 days. Didn't ask for this? Ignore this email and you won't hear from me.`,
   };
 }

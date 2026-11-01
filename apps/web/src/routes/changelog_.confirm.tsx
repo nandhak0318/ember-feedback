@@ -24,5 +24,5 @@ function ConfirmPage() {
 
   if (!result) return <EmailLinkPage title="Confirming" body="One moment." />;
   if (!result.ok) return <EmailLinkPage title="This link has expired" body="Confirm links last 7 days. Subscribe again from the changelog." />;
-  return <EmailLinkPage title="You are subscribed" body={`One email from ${result.workspaceName} each time something ships. Every email has a link to stop.`} />;
+  return <EmailLinkPage title="You're on the list" body={`I'll write when something new lands in ${result.workspaceName}. Every note has a link to stop them.`} />;
 }

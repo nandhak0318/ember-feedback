@@ -61,7 +61,7 @@ function ChangelogPage() {
       {entries.length > 0 ? (
       <section className="flex flex-col gap-2.5 px-2.5">
         <RailLabel>Get updates</RailLabel>
-        <p className="-mt-1 text-[13px] leading-[1.5] text-muted-foreground">One email when something ships. No digest, no marketing.</p>
+        <p className="-mt-1 text-[13px] leading-[1.5] text-muted-foreground">I'll write when something new lands in Ember. Just that, nothing else.</p>
         <SubscribeBox />
         <a href="/changelog.rss" className="inline-flex items-center gap-1.5 text-xs text-faint hover:text-muted-foreground">
           <RssIcon className="size-3.5" /> RSS feed
@@ -149,7 +149,7 @@ function SubscribeBox() {
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  if (sent) return <p className="text-[13px] leading-[1.5] text-foreground" aria-live="polite">Check your inbox for a link to confirm.</p>;
+  if (sent) return <p className="text-[13px] leading-[1.5] text-foreground" aria-live="polite">Nearly there. Open the link in your inbox to confirm.</p>;
   return (
     <>
       <form
@@ -175,7 +175,7 @@ function SubscribeBox() {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@company.com"
+          placeholder="Your email"
           aria-label="Email address"
           aria-invalid={error ? true : undefined}
           className="min-w-0 flex-1 bg-transparent text-[13px] outline-none placeholder:text-faint"
