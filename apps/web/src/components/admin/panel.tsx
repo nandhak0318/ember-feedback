@@ -7,7 +7,7 @@ import { Kbd } from "@/components/bits";
 import { cn } from "@openheard/ui/lib/utils";
 
 // The rounded content panel every admin page lives in, with its top bar.
-export function Panel({ title, children, className, actions, aside, onSearch }: { title: ReactNode; children: ReactNode; className?: string; actions?: ReactNode; aside?: ReactNode; onSearch?: (q: string) => void }) {
+export function Panel({ title, children, className, actions, aside, onSearch, searchLabel = "Search posts" }: { title: ReactNode; children: ReactNode; className?: string; actions?: ReactNode; aside?: ReactNode; onSearch?: (q: string) => void; searchLabel?: string }) {
   const navigate = useNavigate();
   const [q, setQ] = useState("");
   return (
@@ -41,8 +41,8 @@ export function Panel({ title, children, className, actions, aside, onSearch }: 
                     e.currentTarget.blur();
                   }
                 }}
-                placeholder="Search posts"
-                aria-label="Search posts"
+                placeholder={searchLabel}
+                aria-label={searchLabel}
                 className="h-[30px] w-[220px] rounded-lg border bg-card pr-10 pl-7 text-[13px] outline-none placeholder:text-faint focus:border-ring/60"
               />
               <Kbd className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2">⌘K</Kbd>

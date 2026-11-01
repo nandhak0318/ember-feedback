@@ -44,7 +44,7 @@ function PrivacyPage() {
             <li><strong>Your display name</strong>, if you set one. It is shown next to what you post.</li>
             <li><strong>What you post</strong>: ideas, comments, votes, reactions and images you attach. Posts, comments and display names are public on the board.</li>
             <li><strong>Cookies and browser storage</strong>: a session cookie keeps you signed in. If you vote without signing in, your browser keeps a random ID so the board remembers your vote. No advertising or tracking cookies.</li>
-            <li><strong>Network data</strong>: your IP address passes through Cloudflare, which hosts the board, to deliver pages and stop abuse. The board does not store it.</li>
+            <li><strong>Network data</strong>: your IP address passes through Cloudflare, which hosts the board, to deliver pages and stop abuse. When you sign in, your IP address and browser name are kept with your sign-in session to keep your account safe, and deleted when the session ends.</li>
           </ul>
         </section>
 

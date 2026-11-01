@@ -19,6 +19,13 @@ Settings live in `packages/infra/.env` (not committed; it holds the secret).
   primary buttons, Ember swatches in Settings > Statuses. Status chips draw text
   in the status colour on both themes, so each colour is picked to read on both.
 
+- People (dashboard, admins only): `apps/web/src/functions/people.ts` and
+  `apps/web/src/routes/dashboard/people/`. A list of everyone who posted, voted
+  or commented, with email and counts, and a page per person with their activity
+  and a Delete for deletion requests (their votes go, posts and comments stay
+  without a name). Every function checks `requireAdmin` on the server; the
+  public board only ever loads id, name and image.
+
 Board content (statuses, tags, tagline) lives in the database, not the code:
 statuses New / Considering / Planned / In progress / Shipped / Closed; tags for
 Ember's surfaces (Journal, People, Worlds, ...) and platforms (iPhone, iPad, Mac).
