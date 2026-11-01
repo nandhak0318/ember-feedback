@@ -100,8 +100,9 @@ export function createAuth(opts?: { demo?: boolean }) {
         );
       },
     },
+    // Ember's board signs in by email link only.
     emailAndPassword: {
-      enabled: true,
+      enabled: false,
       sendResetPassword: async ({ user, url }) => {
         await authSendEmail(
           user.email,
