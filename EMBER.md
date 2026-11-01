@@ -28,8 +28,9 @@ Settings live in `packages/infra/.env` (not committed; it holds the secret).
 
 - Profile pictures and names, for everyone: "Your profile" in the account
   menu (it opens by itself once for an account with no name).
-  `apps/web/src/routes/api/avatar.ts` takes a picture the page has already
-  cropped to 256px; it is stored as `avatars/<id>` in the uploads bucket and
+  A chosen photo opens a crop step (`components/avatar-cropper.tsx`: drag,
+  zoom by slider, wheel or pinch, arrow keys) that hands back a 256px square;
+  `apps/web/src/routes/api/avatar.ts` stores it; it is stored as `avatars/<id>` in the uploads bucket and
   served at `/avatar/<userId>/<id>` only while it is that person's picture.
   `lib/attachment-db.ts` keeps current pictures in the nightly sweep. A user
   update in `packages/auth` refuses any picture that is not the person's own

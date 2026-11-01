@@ -5,43 +5,30 @@ import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { saveMyName } from "@/functions/profile";
-import { AVATAR_SIZE } from "@/lib/avatar";
 
+import { AvatarCropper } from "./avatar-cropper";
 import { Avatar } from "./bits";
 
-// Ember: crop to the centre square and shrink to AVATAR_SIZE in the browser, so
-// a phone photo uploads as a few kilobytes and the server never resizes.
-async function toSquare(file: File): Promise<Blob> {
-  const bitmap = await createImageBitmap(file);
-  const side = Math.min(bitmap.width, bitmap.height);
-  const canvas = document.createElement("canvas");
-  canvas.width = canvas.height = AVATAR_SIZE;
-  const ctx = canvas.getContext("2d")!;
-  ctx.imageSmoothingQuality = "high";
-  ctx.drawImage(bitmap, (bitmap.width - side) / 2, (bitmap.height - side) / 2, side, side, 0, 0, AVATAR_SIZE, AVATAR_SIZE);
-  bitmap.close();
-  const webp = await new Promise<Blob | null>((r) => canvas.toBlob(r, "image/webp", 0.86));
-  if (webp?.type === "image/webp") return webp;
-  const jpeg = await new Promise<Blob | null>((r) => canvas.toBlob(r, "image/jpeg", 0.88));
-  if (!jpeg) throw new Error("Could not read that picture");
-  return jpeg;
-}
-
-// The picture with Upload / Remove, for the profile dialog and the dashboard's profile page.
+// The picture with Upload / Remove, for the profile dialog and the dashboard's
+// profile page. A chosen photo goes through the cropper first, which hands back
+// a small square, so the server never resizes.
 export function AvatarPicker({ name, image, size = 64 }: { name: string; image?: string | null; size?: number }) {
   const router = useRouter();
   const input = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
+  const [cropping, setCropping] = useState<File | null>(null);
 
-  async function send(method: "POST" | "DELETE", body?: Blob) {
+  async function send(method: "POST" | "DELETE", body?: Blob): Promise<boolean> {
     setBusy(true);
     try {
       const res = await fetch("/api/avatar", { method, body, headers: body ? { "content-type": body.type } : undefined });
       const out = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) throw new Error(out.error ?? "Could not save the picture");
       await router.invalidate();
+      return true;
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Could not save the picture");
+      return false;
     } finally {
       setBusy(false);
     }
@@ -65,15 +52,17 @@ export function AvatarPicker({ name, image, size = 64 }: { name: string; image?:
         type="file"
         accept="image/png,image/jpeg,image/webp,image/heic,image/heif"
         className="hidden"
-        onChange={async (e) => {
+        onChange={(e) => {
           const file = e.target.files?.[0];
           e.target.value = "";
-          if (!file) return;
-          try {
-            await send("POST", await toSquare(file));
-          } catch {
-            toast.error("That file isn't a picture this browser can read. Try a JPEG or PNG.");
-          }
+          if (file) setCropping(file);
+        }}
+      />
+      <AvatarCropper
+        file={cropping}
+        onCancel={() => setCropping(null)}
+        onDone={async (blob) => {
+          if (await send("POST", blob)) setCropping(null);
         }}
       />
     </div>
