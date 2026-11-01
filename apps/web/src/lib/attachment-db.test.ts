@@ -209,6 +209,23 @@ describe("sweepOrphans", () => {
     }
     expect(bucket.deleted.flat().sort()).toEqual(["acme/oldLogo0123456789ab", "acme/strayUpload012345678"]);
   });
+
+  // Ember: profile pictures live in the same bucket with no attachment row.
+  it("keeps the picture each user uses and removes replaced ones", async () => {
+    const db = await freshDb();
+    await db.update(schema.user).set({ image: "/avatar/ann/currentPic0123456789" }).where(eq(schema.user.id, "ann"));
+    await db.update(schema.user).set({ image: "https://lh3.example.test/bob.png" }).where(eq(schema.user.id, "bob"));
+    const keys = ["avatars/currentPic0123456789", "avatars/oldPic0123456789ab", "avatars/strayPic012345678"];
+    const list = bucket.list;
+    bucket.list = async () => ({ objects: keys.map((key) => ({ key, uploaded: OLD })), truncated: false }) as never;
+    bucket.deleted = [];
+    try {
+      expect(await sweepOrphans(db)).toBe(2);
+    } finally {
+      bucket.list = list;
+    }
+    expect(bucket.deleted.flat().sort()).toEqual(["avatars/oldPic0123456789ab", "avatars/strayPic012345678"]);
+  });
 });
 
 describe("attachment indexes", () => {

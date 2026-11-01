@@ -4,8 +4,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { Row, SectionHead } from "@/components/admin/panel";
-import { Avatar } from "@/components/bits";
-import { saveProfile } from "@/functions/settings";
+import { AvatarPicker } from "@/components/profile-dialog";
+import { saveMyName } from "@/functions/profile";
 import { PageHead } from "@/routes/dashboard/settings";
 
 export const Route = createFileRoute("/dashboard/settings/profile")({
@@ -21,7 +21,7 @@ function Profile() {
   const dirty = name.trim() !== me.name;
 
   function save() {
-    saveProfile({ data: { name } })
+    saveMyName({ data: { name } })
       .then(() => router.invalidate())
       .catch((err) => toast.error(err instanceof Error ? err.message : "Could not save"));
   }
@@ -30,8 +30,8 @@ function Profile() {
     <>
       <PageHead title="Profile" sub="How you appear on posts and replies." />
       <SectionHead title="You" />
-      <Row label="Picture" help="Upload lands with image support.">
-        <Avatar name={me.name} image={me.image} size={36} />
+      <Row label="Picture" help="Shown next to your replies, cropped to a square.">
+        <AvatarPicker name={me.name || me.email} image={me.image} size={36} />
       </Row>
       <Row label="Name" help="Shown on your comments and in the team list.">
         <input value={name} onChange={(e) => setName(e.target.value)} aria-label="Display name" className="h-8 w-[280px] rounded-lg border border-input bg-card px-2.5 text-[13px] outline-none focus:border-ring/60" />

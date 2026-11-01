@@ -1,10 +1,11 @@
 // Storing, claiming and deleting image attachments. Server only: it pulls in
 // the database and the R2 binding, so routes reach it through a dynamic import.
-import { attachment, workspace, type Db } from "@openheard/db";
+import { attachment, user, workspace, type Db } from "@openheard/db";
 import { env } from "@openheard/env/server";
 import { and, eq, inArray, isNull, like, lt, sql, type SQL } from "drizzle-orm";
 
 import { MAX_IMAGE_BYTES, MAX_IMAGES, formatBytes, imageSize, sniffImageType, toAttachmentView } from "./attachments";
+import { avatarKey } from "./avatar";
 
 type StoredObject = { body: ReadableStream; size: number; httpEtag: string; httpMetadata?: { contentType?: string } };
 export type UploadsBucket = {
@@ -130,12 +131,18 @@ export function sweepUnclaimed(db: Db, olderThan = DAY) {
 // away in the database, which cannot reach into the bucket, so the nightly
 // run deletes what is left behind. Fresh objects are skipped: their row may
 // be a moment behind the write. A workspace's current logo lives in the
-// same bucket with no attachment row, so it counts as known too.
+// same bucket with no attachment row, so it counts as known too, and so
+// (Ember) does each user's current profile picture.
 export async function sweepOrphans(db: Db, olderThan = DAY) {
   const bucket = uploadsBucket();
   if (!bucket) return 0;
   const logos = await db.select({ id: workspace.id, logoUrl: workspace.logoUrl }).from(workspace).where(like(workspace.logoUrl, "/logo/%"));
   const logoKeys = new Set(logos.map((w) => objectKey(w.id, w.logoUrl!.slice("/logo/".length))));
+  const pictures = await db.select({ image: user.image }).from(user).where(like(user.image, "/avatar/%"));
+  for (const p of pictures) {
+    const key = avatarKey(p.image);
+    if (key) logoKeys.add(key);
+  }
   const cutoff = Date.now() - olderThan;
   let cursor: string | undefined;
   let removed = 0;

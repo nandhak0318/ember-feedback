@@ -47,18 +47,29 @@ export function Kbd({ children, className }: { children: React.ReactNode; classN
   );
 }
 
+// Ember: a person without a picture gets a colour of their own, the same one
+// everywhere, from Ember's palette. White letters clear 4.3:1 on each.
+const AVATAR_COLORS = ["#c25a24", "#8e6a12", "#4f76a3", "#3f8150", "#357a76", "#86608b", "#a9472f", "#6f665b"];
+
+function avatarColor(name: string) {
+  let h = 0;
+  for (const ch of name.trim().toLowerCase()) h = (h * 31 + ch.codePointAt(0)!) >>> 0;
+  return AVATAR_COLORS[h % AVATAR_COLORS.length]!;
+}
+
 export function Avatar({ name, image, size = 26, className }: { name: string; image?: string | null; size?: number; className?: string }) {
   const initials = name
+    .split("@")[0]!
     .split(/\s+/)
     .slice(0, 2)
     .map((s) => s[0]?.toUpperCase() ?? "")
     .join("");
   return image ? (
-    <img src={image} alt="" width={size} height={size} className={cn("rounded-full object-cover", className)} style={{ width: size, height: size }} />
+    <img src={image} alt="" width={size} height={size} className={cn("shrink-0 rounded-full object-cover", className)} style={{ width: size, height: size }} />
   ) : (
     <span
-      className={cn("inline-flex shrink-0 items-center justify-center rounded-full border bg-accent font-semibold text-foreground", className)}
-      style={{ width: size, height: size, fontSize: Math.round(size * 0.38) }}
+      className={cn("inline-flex shrink-0 items-center justify-center rounded-full font-semibold text-white", className)}
+      style={{ width: size, height: size, fontSize: Math.round(size * 0.4), background: initials && initials !== "?" ? avatarColor(name) : "var(--accent)" }}
       aria-hidden
     >
       {initials}

@@ -145,6 +145,21 @@ export function createAuth(opts?: { demo?: boolean }) {
               .onConflictDoNothing();
           },
         },
+        // Ember: a picture is only ever one this board stores for that same
+        // person (/avatar/<their id>/<id>), or none. The public update-user
+        // endpoint would otherwise take any URL, such as a tracking pixel every
+        // visitor's browser then loads.
+        update: {
+          before: async (u, ctx) => {
+            if (u.image === undefined || u.image === null) return { data: u };
+            const sessionUserId = (ctx as { context?: { session?: { user?: { id?: string } } } } | undefined)?.context?.session?.user?.id;
+            const m = /^\/avatar\/([A-Za-z0-9_-]{1,64})\/[A-Za-z0-9_-]{16,40}$/.exec(u.image);
+            if (m && sessionUserId && m[1] === sessionUserId) return { data: u };
+            // Refuse the whole update: Better Auth merges a hook's data over the
+            // request's, so leaving image out would not drop it.
+            return false;
+          },
+        },
       },
     },
     secret: env.BETTER_AUTH_SECRET,

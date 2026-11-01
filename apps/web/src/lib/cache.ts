@@ -23,7 +23,7 @@ export function isPrivatePath(pathname: string): boolean {
 // Uploaded images and logos set their own long-lived cache headers; a session
 // cookie on the request does not make an image private.
 export function isImmutableAsset(pathname: string): boolean {
-  return pathname.startsWith("/uploads/") || pathname.startsWith("/logo/");
+  return pathname.startsWith("/uploads/") || pathname.startsWith("/logo/") || pathname.startsWith("/avatar/");
 }
 
 export function hasSessionCookie(request: Request): boolean {

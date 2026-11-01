@@ -26,6 +26,15 @@ Settings live in `packages/infra/.env` (not committed; it holds the secret).
   without a name). Every function checks `requireAdmin` on the server; the
   public board only ever loads id, name and image.
 
+- Profile pictures and names, for everyone: "Your profile" in the account
+  menu (it opens by itself once for an account with no name).
+  `apps/web/src/routes/api/avatar.ts` takes a picture the page has already
+  cropped to 256px; it is stored as `avatars/<id>` in the uploads bucket and
+  served at `/avatar/<userId>/<id>` only while it is that person's picture.
+  `lib/attachment-db.ts` keeps current pictures in the nightly sweep. A user
+  update in `packages/auth` refuses any picture that is not the person's own
+  `/avatar/...` path. Without a picture, a coloured letter (`components/bits.tsx`).
+
 Board content (statuses, tags, tagline) lives in the database, not the code:
 statuses New / Considering / Planned / In progress / Shipped / Closed; tags for
 Ember's surfaces (Journal, People, Worlds, ...) and platforms (iPhone, iPad, Mac).
