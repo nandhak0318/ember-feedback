@@ -12,8 +12,8 @@ Settings live in `packages/infra/.env` (not committed; it holds the secret).
 
 AGPL: a modified copy that runs as a service must publish its source. The
 footer's Source link (`SOURCE_URL`) points at the public fork,
-github.com/nandhak0318/ember-feedback, which has to exist and hold these
-changes before the board goes live.
+github.com/nandhak0318/ember-feedback/tree/ember, which holds these
+changes. Push the `ember` branch after every change you deploy.
 
 ## Deploy, once
 
@@ -35,7 +35,7 @@ changes before the board goes live.
    becomes the admin.
 
 Later deploys: `bun run deploy` again. Pull upstream with
-`git pull https://github.com/Heilonng23/openheard main`.
+`git pull upstream main`.
 
 ## Try it locally
 
