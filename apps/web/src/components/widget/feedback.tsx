@@ -323,7 +323,7 @@ export function Composer() {
               onClick={() => openPost(s.id)}
               className="flex min-h-10 items-center gap-2.5 rounded-lg bg-secondary px-2 py-2 text-left text-[13px] transition-colors hover:bg-accent"
             >
-              <span className="inline-flex h-[22px] shrink-0 items-center rounded-md border border-input px-1.5 text-[11px] text-muted-foreground tabular-nums">{s.voteCount}</span>
+              {s.voteCount > 0 ? <span className="inline-flex h-[22px] shrink-0 items-center rounded-md border border-input px-1.5 text-[11px] text-muted-foreground tabular-nums">{s.voteCount}</span> : null}
               <span className="flex-1 truncate">{s.title}</span>
             </button>
           ))}

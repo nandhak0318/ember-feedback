@@ -220,7 +220,7 @@ export function NewPostDialog({
                   <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M1.5 7 5 3l3.5 4" />
                   </svg>
-                  {s.voteCount}
+                  {s.voteCount > 0 ? s.voteCount : null}
                 </span>
                 <span className="flex-1 truncate">{s.title}</span>
                 {findStatus(statuses, s.status).kind !== "open" ? (

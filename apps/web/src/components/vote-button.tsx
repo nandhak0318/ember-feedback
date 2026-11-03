@@ -95,7 +95,8 @@ export function VoteButton({
   const widest = high.length >= low.length ? high : low;
   const shown = fmt(like.count);
 
-  const countCell = (cls: string) => (
+  // Ember: a post nobody has voted on shows the caret alone, not a 0.
+  const countCell = (cls: string) => like.count === 0 ? null : (
     <motion.span
       aria-hidden
       initial={false}
@@ -210,7 +211,7 @@ export function VoteButton({
       </motion.span>
       {countCell(cn(lg ? "text-sm" : "text-[13px]", on ? "text-[var(--link-foreground,#0d0d0f)]" : "text-foreground"))}
       <span role="status" aria-live="polite" className="sr-only">
-        {`${shown} votes, ${on ? "voted" : "not voted"}`}
+        {`${like.count === 0 ? "No votes yet" : `${shown} votes`}, ${on ? "voted" : "not voted"}`}
       </span>
     </motion.button>
   );

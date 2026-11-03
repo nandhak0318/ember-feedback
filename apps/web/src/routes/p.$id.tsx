@@ -34,11 +34,11 @@ export const Route = createFileRoute("/p/$id")({
       ...(loaderData
         ? [
             { property: "og:title", content: loaderData.title },
-            { property: "og:description", content: loaderData.body ? loaderData.body.slice(0, 200) : `${loaderData.voteCount} votes` },
+            { property: "og:description", content: loaderData.body ? loaderData.body.slice(0, 200) : loaderData.voteCount > 0 ? `${loaderData.voteCount} votes` : loaderData.title },
             { property: "og:type", content: "article" },
             { name: "twitter:card", content: "summary" },
             { name: "twitter:title", content: loaderData.title },
-            { name: "twitter:description", content: loaderData.body ? loaderData.body.slice(0, 200) : `${loaderData.voteCount} votes` },
+            { name: "twitter:description", content: loaderData.body ? loaderData.body.slice(0, 200) : loaderData.voteCount > 0 ? `${loaderData.voteCount} votes` : loaderData.title },
           ]
         : []),
     ],
@@ -145,6 +145,7 @@ function PostPage() {
       <Button full arrow size="lg" onClick={() => router.navigate({ to: "/" })} className="brand-cta">
         Post idea
       </Button>
+      {p.voteCount > 0 ? (
       <section>
         <RailLabel>Voters</RailLabel>
         <div className="flex items-center px-2.5">
@@ -152,9 +153,9 @@ function PostPage() {
             <Avatar key={v.user.id} name={v.user.name} image={v.user.image} size={26} className={cn("ring-2 ring-background", i > 0 && "-ml-1.5")} />
           ))}
           {p.voteCount > p.votes.length ? <span className="ml-2.5 text-xs text-muted-foreground">+{p.voteCount - p.votes.length}</span> : null}
-          {p.voteCount === 0 ? <span className="text-xs text-faint">No votes yet</span> : null}
         </div>
       </section>
+      ) : null}
       <section>
         <RailLabel>Details</RailLabel>
         <dl className="flex flex-col">
